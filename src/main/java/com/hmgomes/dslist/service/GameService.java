@@ -3,6 +3,7 @@ package com.hmgomes.dslist.service;
 import com.hmgomes.dslist.dto.GameDTO;
 import com.hmgomes.dslist.dto.GameMinDTO;
 import com.hmgomes.dslist.entities.Game;
+import com.hmgomes.dslist.projections.GameMinProjection;
 import com.hmgomes.dslist.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,13 @@ public class GameService {
 
 
     }
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId){
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
+        return  result.stream().map(x-> new GameMinDTO(x)).toList();
+
+
+    }
 
     @Transactional(readOnly = true)
     public GameDTO findById(Long gameId){
@@ -32,5 +40,7 @@ public class GameService {
         return new GameDTO(result);
 
     }
+
+
 
 }
